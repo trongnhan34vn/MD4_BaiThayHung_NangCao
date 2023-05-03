@@ -44,9 +44,9 @@
                                     <p>${product.description}</p>
                                     <input type="hidden" name="id" value="${product.productId}">
                                     <input type="hidden" name="action" value="create">
-                                    <input name="quantity-product-1" type="number" value="1" min="1">
-                                    <input type="submit" data-product="1" class="price"> ${product.price}>
+                                    <input name="quantity" type="number" value="1" min="1" style="display: block">
                                 </div>
+                                <input type="submit" value="${product.price}" data-product="1" class="price">
                             </form>
                         </div>
                         <!-- PRODUCT : END -->
@@ -55,6 +55,67 @@
             </div>
         </div>
         <!-- LIST PRODUCT : END -->
+        <!-- CART : START -->
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h1 class="panel-title">Your Cart</h1>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th width="4%">#</th>
+                            <th>Pokemon</th>
+                            <th width="15%">Price</th>
+                            <th width="4%">Quantity</th>
+                            <th width="20%">Subtotal</th>
+                            <th width="25%">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody id="my-cart-body">
+                        <!-- CART BODY -->
+                        <c:forEach items="${cartList}" var="cartItem" >
+                            <tr>
+                                <form action="cart-servlet" method="post">
+                                    <th scope="row">${cartItem.getCartId()}</th>
+                                    <td>${cartItem.getProduct().getProductName()}</td>
+                                    <td>${cartItem.getProduct().getPrice()} USD</td>
+                                    <td><input name="quantity" type="number" value="${cartItem.getQuantity()}" min="1"></td>
+                                    <td><strong>${cartItem.getProduct().getPrice() * cartItem.getQuantity()}</strong></td>
+                                    <td>
+                                        <input type="hidden">
+                                        <input type="submit" value="Update" class="label label-info update-cart-item" href="#" data-product="" />
+                                        <a class="label label-danger delete-cart-item" href="#"
+                                           data-product="">Delete</a>
+                                    </td>
+                                </form>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                        <tfoot id="my-cart-footer">
+                        <!-- CART FOOTER -->
+                        <tr>
+                            <th colspan="6">Empty product in your cart</th>
+                        </tr>
+                        <c:if test="${cartList != null}" >
+                            <tr>
+                                <td colspan="4">There are <b>${cartList.size()}</b> items in your shopping cart.</td>
+                                <c:set var="total" value="${0}" />
+                                <c:forEach items="${cartList}" var="cart" >
+                                    <c:set var="total" value="${total + cart.getProduct().getPrice() * cart.getQuantity()}" />
+                                </c:forEach>
+                                <td colspan="2" class="total-price text-left">${total} USD</td>
+                            </tr>
+                        </c:if>
+                        </tfoot>
+                    </table>
+
+                </div>
+            </div>
+            <div class="alert alert-success" role="alert" id="mnotification">Updated <b>successfull</b></div>
+        </div>
+        <!-- CART : END -->
     </div>
     <script src="../assets/script/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

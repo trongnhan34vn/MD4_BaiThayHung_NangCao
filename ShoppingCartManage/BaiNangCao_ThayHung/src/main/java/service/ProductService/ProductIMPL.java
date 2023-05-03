@@ -1,5 +1,6 @@
 package service.ProductService;
 
+import model.Cart;
 import model.Product;
 import util.ConnectionDB;
 
@@ -31,6 +32,10 @@ public class ProductIMPL implements IProductService{
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                ConnectionDB.closeConnection(conn);
+            }
         }
         return productList;
     }
@@ -42,6 +47,11 @@ public class ProductIMPL implements IProductService{
 
     @Override
     public Product findById(int id) {
+        for (Product product : findAll()) {
+            if (product.getProductId() == id) {
+                return product;
+            }
+        }
         return null;
     }
 

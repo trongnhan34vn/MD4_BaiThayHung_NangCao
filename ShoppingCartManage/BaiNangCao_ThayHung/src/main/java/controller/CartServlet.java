@@ -17,17 +17,26 @@ import java.io.IOException;
 public class CartServlet extends HttpServlet {
     ICartService cartService = new CartServiceIMPL();
     IProductService productService = new ProductIMPL();
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String action = request.getParameter("action");
         if(action == null) {
             action = "";
         }
         switch (action) {
+            case "show":
+                showCart(request, response);
+                break;
             case "update":
                 break;
             case "delete":
                 break;
         }
+    }
+
+    private void showCart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("productList", productService.findAll());
+        request.setAttribute("cartList",  cartService.findAll());
+        request.getRequestDispatcher("view/Home.jsp").forward(request,response);
     }
 
     @Override
@@ -43,21 +52,33 @@ public class CartServlet extends HttpServlet {
         }
     }
 
-    private void createCart(HttpServletRequest request, HttpServletResponse response) {
+    private void createCart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int productId = Integer.parseInt(request.getParameter("id"));
         int quantityNew = Integer.parseInt(request.getParameter("quantity"));
-        for (Cart cart: cartService.findAll()) {
-            if (cart.getProduct().getProductId() == productId) {
-                cart.setQuantity(cart.getQuantity() + quantityNew);
-                break;
-            } else {
-                Cart newCart = new Cart();
-                newCart.setQuantity(quantityNew);
-                newCart.setProduct(productService.findById(productId));
-                newCart.setCartId(getCartId());
-                cartService.save(newCart);
+        if (!cartService.findAll().isEmpty()) {
+            for (Cart cart: cartService.findAll()) {
+                if (cart.getProduct().getProductId() == productId) {
+                    cart.setQuantity(cart.getQuantity() + quantityNew);
+                    cartService.save(cart);
+                    break;
+                } else {
+                    Cart newCart = new Cart();
+                    newCart.setQuantity(quantityNew);
+                    newCart.setProduct(productService.findById(productId));
+                    newCart.setCartId(getCartId());
+                    cartService.save(newCart);
+                }
             }
+        } else {
+            Cart newCart = new Cart();
+            newCart.setQuantity(quantityNew);
+            newCart.setProduct(productService.findById(productId));
+            newCart.setCartId(getCartId());
+            cartService.save(newCart);
         }
+        request.setAttribute("cartList", cartService.findAll());
+        request.setAttribute("productList", productService.findAll());
+        request.getRequestDispatcher("view/Home.jsp").forward(request, response);
     }
 
     private int getCartId() {

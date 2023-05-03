@@ -1,2 +1,2 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<% response.sendRedirect("product-servlet?action=show"); %>
+<% response.sendRedirect("cart-servlet?action=show"); %>
