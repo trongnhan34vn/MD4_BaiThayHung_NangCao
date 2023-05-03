@@ -26,11 +26,18 @@ public class CartServlet extends HttpServlet {
             case "show":
                 showCart(request, response);
                 break;
-            case "update":
-                break;
             case "delete":
+                deleteCartItem(request, response);
                 break;
         }
+    }
+    private void deleteCartItem(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int idDel = Integer.parseInt(request.getParameter("id"));
+        cartService.remove(idDel);
+        request.setAttribute("productList", productService.findAll());
+        request.setAttribute("cartList",  cartService.findAll());
+        request.setAttribute("message", "success!");
+        request.getRequestDispatcher("view/Home.jsp").forward(request,response);
     }
 
     private void showCart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -49,7 +56,21 @@ public class CartServlet extends HttpServlet {
             case "create":
                 createCart(request, response);
                 break;
+            case "update":
+                updateCart(request, response);
+                break;
         }
+    }
+    private void updateCart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int idU = Integer.parseInt(request.getParameter("id"));
+        Cart cartU = cartService.findById(idU);
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        cartU.setQuantity(quantity);
+        cartService.save(cartU);
+        request.setAttribute("cartList", cartService.findAll());
+        request.setAttribute("productList", productService.findAll());
+        request.setAttribute("message", "success!");
+        request.getRequestDispatcher("view/Home.jsp").forward(request, response);
     }
 
     private void createCart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

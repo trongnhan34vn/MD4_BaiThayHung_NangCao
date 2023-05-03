@@ -10,8 +10,9 @@
 <html>
 <head>
     <title>Title</title>
-    <link href="../assets/css/style.css" rel="stylesheet">
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/bootstrap-shit.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
@@ -84,9 +85,10 @@
                                     <td><input name="quantity" type="number" value="${cartItem.getQuantity()}" min="1"></td>
                                     <td><strong>${cartItem.getProduct().getPrice() * cartItem.getQuantity()}</strong></td>
                                     <td>
-                                        <input type="hidden">
-                                        <input type="submit" value="Update" class="label label-info update-cart-item" href="#" data-product="" />
-                                        <a class="label label-danger delete-cart-item" href="#"
+                                        <input type="hidden" name="action" value="update" />
+                                        <input type="hidden" name="id" value="${cartItem.getCartId()}">
+                                        <input id="update-cart-item" type="submit" value="Update" class="label label-info update-cart-item">
+                                        <a class="label label-danger delete-cart-item" href="cart-servlet?action=delete&id=${cartItem.getCartId()}"
                                            data-product="">Delete</a>
                                     </td>
                                 </form>
@@ -113,7 +115,9 @@
 
                 </div>
             </div>
-            <div class="alert alert-success" role="alert" id="mnotification">Updated <b>successfull</b></div>
+            <c:if test="${message != null}">
+                <div class="alert alert-success" role="alert" id="mnotification">Updated <b>successfull</b></div>
+            </c:if>
         </div>
         <!-- CART : END -->
     </div>

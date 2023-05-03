@@ -106,6 +106,17 @@ public class CartServiceIMPL implements ICartService {
 
     @Override
     public void remove(int id) {
-
+        Connection conn = null;
+        try {
+            conn = ConnectionDB.getConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement("DELETE FROM Cart WHERE CartID = " + id);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                ConnectionDB.closeConnection(conn);
+            }
+        }
     }
 }
