@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: nhan
@@ -27,74 +28,29 @@
                 <div class="panel-heading">
                     <h1 class="panel-title">List Products</h1>
                 </div>
+
                 <div class="panel-body" id="list-product">
-
-                    <!-- PRODUCT : START -->
-                    <div class="media product">
-                        <div class="media-left">
-                            <a href="#">
-                                <img class="media-object" src="images/pizza.jpg" alt="pizza">
-                            </a>
+                    <c:forEach items="${productList}" var="product">
+                        <!-- PRODUCT : START -->
+                        <div class="media product">
+                            <div class="media-left">
+                                <a href="#">
+                                    <img class="media-object" src="images/pizza.jpg" alt="pizza">
+                                </a>
+                            </div>
+                            <form action="cart-servlet" method="post">
+                                <div class="media-body">
+                                    <h4 class="media-heading">${product.productName}</h4>
+                                    <p>${product.description}</p>
+                                    <input type="hidden" name="id" value="${product.productId}">
+                                    <input type="hidden" name="action" value="create">
+                                    <input name="quantity-product-1" type="number" value="1" min="1">
+                                    <input type="submit" data-product="1" class="price"> ${product.price}>
+                                </div>
+                            </form>
                         </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Pizza</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At dicta asperiores veniam
-                                repellat unde debitis quisquam magnam magni ut deleniti!</p>
-                            <input name="quantity-product-1" type="number" value="1" min="1">
-                            <a data-product="1" href="#" class="price"> 12 USD </a>
-                        </div>
-                    </div>
-                    <!-- PRODUCT : END -->
-
-                    <!-- PRODUCT : START -->
-                    <div class="media product">
-                        <div class="media-left">
-                            <a href="#">
-                                <img class="media-object" src="images/Hamburger.jpg" alt="hamburger">
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Hamburger</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At dicta asperiores veniam
-                                repellat unde debitis quisquam magnam magni ut deleniti!</p>
-                            <span class="price"> 12 USD</span>
-                        </div>
-                    </div>
-                    <!-- PRODUCT : END -->
-
-                    <!-- PRODUCT : START -->
-                    <div class="media product">
-                        <div class="media-left">
-                            <a href="#">
-                                <img class="media-object" src="images/bread.jpg" alt="bread">
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Bread</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At dicta asperiores veniam
-                                repellat unde debitis quisquam magnam magni ut deleniti!</p>
-                            <input name="quantity-product-1" type="number" value="1" min="1">
-                            <a data-product="1" href="#" class="price"> 12 USD </a>
-                        </div>
-                    </div>
-                    <!-- PRODUCT : END -->
-
-                    <!-- PRODUCT : START -->
-                    <div class="media product">
-                        <div class="media-left">
-                            <a href="#">
-                                <img class="media-object" src="images/Cake.jpg" alt="cake">
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Cake</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At dicta asperiores veniam
-                                repellat unde debitis quisquam magnam magni ut deleniti!</p>
-                            <input name="quantity-product-1" type="number" value="1" min="1">
-                            <a data-product="1" href="#" class="price"> 12 USD </a>
-                        </div>
-                    </div>
-                    <!-- PRODUCT : END -->
+                        <!-- PRODUCT : END -->
+                    </c:forEach>
                 </div>
             </div>
         </div>

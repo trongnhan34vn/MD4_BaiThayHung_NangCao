@@ -41,8 +41,8 @@ public class ProductIMPL implements IProductService{
     }
 
     @Override
-    public void findById(int id) {
-
+    public Product findById(int id) {
+        return null;
     }
 
     @Override
